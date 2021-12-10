@@ -3,18 +3,19 @@
 
 #include <flecs.h>
 #include <iostream>
+#include <string>
 
 struct simple_module {
     // Define types inside module scope. This is not mandatory, but ensures
     // that their fully qualified Flecs name matches the C++ type name. It also
     // ensures that type names cannot clash between modules.
 
-    struct Position {
-        double x, y;
+    struct Xml {
+        std::string resource;
     };
 
-    struct Velocity {
-        double x, y;
+    struct StartTime{
+        uint64_t start_time;
     };
 
     simple_module(flecs::world& ecs) {
@@ -22,18 +23,8 @@ struct simple_module {
         ecs.module<simple_module>();
 
         /* Register components */
-        ecs.component<Position>();
-        ecs.component<Velocity>();
-
-        /* Register system */
-        ecs.system<Position, const Velocity>("Move")
-            .each([](flecs::entity e, Position& p, const Velocity& v) {    
-                p.x += v.x;
-                p.y += v.y;
-
-                std::cout << "Moved " << e.name() << " to {" <<
-                    p.x << ", " << p.y << "}" << std::endl;
-            });        
+        ecs.component<Xml>();  
+        ecs.component<StartTime>();  
     }
 };
 

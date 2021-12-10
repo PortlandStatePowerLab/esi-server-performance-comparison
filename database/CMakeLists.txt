@@ -1,10 +1,10 @@
 FetchContent_Declare(
-  mysql-conn
-  GIT_REPOSITORY https://github.com/mysql/mysql-connector-cpp.git
-  GIT_TAG        8.0.27
+  redis-cpp
+  GIT_REPOSITORY https://github.com/tdv/redis-cpp.git
+  GIT_TAG        master
 )
 
-FetchContent_MakeAvailable(mysql-conn)
+FetchContent_MakeAvailable(redis-cpp)
 
 # http://mariobadr.com/creating-a-header-only-library-with-cmake.html
 set(COMPONENT_NAME database)
@@ -20,8 +20,6 @@ target_include_directories(
 )
 
 target_link_libraries(${COMPONENT_NAME} INTERFACE 
-  xapi
-  devapi
-  connector
+  redis-cpp
   pthread
 )

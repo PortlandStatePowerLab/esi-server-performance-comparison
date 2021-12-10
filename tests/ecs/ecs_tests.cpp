@@ -1,21 +1,18 @@
-#include <gtest/gtest.h>
 #include <ecs/world.hpp>
 #include <chrono>
 
-class TestECS : public ::testing::Test 
+struct TestECS
 {
-protected:
-    void SetUp() override 
+    TestECS() 
     {   
         world.import<simple_module>();     
     }
 
-    void TearDown() override
+    ~TestECS()
     {
         // do nothing
     }
 
-protected:
     flecs::world world;
 
     class Timer
@@ -73,19 +70,20 @@ protected:
 
     void clear ()
     {
-        std::cout << world.count<simple_module::Xml>();
+        Timer stop_watch;
+        world.progress();
     }
 };
 
-TEST_F(TestECS, IsSampleValid) 
-{   
+int main(int argc, char **argv) 
+{
+    TestECS ecs;
     for (uint64_t i = 100; i <= 1000000; i=i*10)
     {
-        std::cout << "ECS Test: " << i << "\n";
-        insert(i);
-        update(i/2, i);
-        clear();
+        ecs.insert(i);
+        ecs.update(i/2, i);
+        ecs.clear();
         std::cout << "\n";
-    }    
-    EXPECT_TRUE(false);  
+    }
+    return 0;
 }

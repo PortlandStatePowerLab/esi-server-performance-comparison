@@ -5,26 +5,32 @@
 #include <iostream>
 #include <string>
 
-struct simple_module {
+struct simple_module
+{
     // Define types inside module scope. This is not mandatory, but ensures
     // that their fully qualified Flecs name matches the C++ type name. It also
     // ensures that type names cannot clash between modules.
 
-    struct Xml {
+    struct Xml
+    {
         std::string resource;
     };
 
-    struct StartTime{
+    struct StartTime
+    {
         uint64_t start_time;
     };
 
-    simple_module(flecs::world& ecs) {
+    simple_module(flecs::world &ecs)
+    {
         /* Register module with world */
         ecs.module<simple_module>();
 
-        /* Register components */
-        ecs.component<Xml>();  
-        ecs.component<StartTime>();  
+        /* Register system */
+        ecs.system<Xml, StartTime>("Move")
+            .each([](flecs::entity e, Xml& p, const StartTime& v) {    
+                e.destruct();
+            });        
     }
 };
 

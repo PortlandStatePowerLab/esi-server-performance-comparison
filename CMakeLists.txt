@@ -22,4 +22,4 @@ include(FetchContent)
 
 add_subdirectory(ecs)
 add_subdirectory(database)
-add_subdirectory(tests)
+#add_subdirectory(tests)
